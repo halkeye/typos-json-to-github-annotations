@@ -3,7 +3,8 @@ use serde::Deserialize;
 use std::fmt;
 use std::io::prelude::*;
 use std::io::BufReader;
-use std::fs::File;
+
+type Error = Box<dyn std::error::Error + Send + Sync + 'static>;
 
 #[derive(Parser)]
 struct Cli {
@@ -50,11 +51,22 @@ enum Message {
     Typo(Typo)
 }
 
-fn main() -> std::io::Result<()> {
+fn main() -> Result<(), Error> {
     let args = Cli::parse();
 
-    let f = File::open(&args.path)?;
-    let reader = BufReader::new(f);
+    let input: Box<dyn std::io::Read + 'static> = if args.path.as_os_str() == "-" {
+        Box::new(std::io::stdin())
+    } else {
+        match std::fs::File::open(&args.path) {
+            Ok(file) => Box::new(file),
+            Err(err) => {
+                let msg = format!("{}: {}", args.path.display(), err);
+                return Err(Error::from(msg));
+            }
+        }
+    };
+
+    let reader = BufReader::new(input);
 
     for line in reader.lines() {
         let unwrapped_line = line.unwrap();
