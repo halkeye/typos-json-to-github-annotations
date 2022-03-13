@@ -6,6 +6,7 @@ pipeline {
     stage('Build') {
       steps {
         sh 'cargo build'
+        archiveArtifact('target/debug/typos-json-to-github-annotations')
       }
     }
 
