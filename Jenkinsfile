@@ -6,7 +6,7 @@ pipeline {
     stage('Build') {
       steps {
         sh 'cargo build'
-        archiveArtifact('target/debug/typos-json-to-github-annotations')
+        archiveArtifacts 'target/debug/typos-json-to-github-annotations'
       }
     }
 
@@ -31,7 +31,7 @@ pipeline {
       }
       post {
         always {
-          recordIssues(tools: [cargo()])
+          recordIssues tools: [cargo()]
         }
       }
     }
