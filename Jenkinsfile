@@ -23,11 +23,6 @@ pipeline {
           cargo clippy --all
         '''
       }
-      post {
-        always {
-          recordIssues tool: cargo()
-        }
-      }
     }
 
     stage('Rustfmt') {
@@ -36,7 +31,7 @@ pipeline {
       }
       post {
         always {
-          recordIssues tool: cargo()
+          recordIssues(tools: [cargo()])
         }
       }
     }
