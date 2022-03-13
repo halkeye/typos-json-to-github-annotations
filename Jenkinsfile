@@ -5,19 +5,22 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh "cargo build"
+        sh 'cargo build'
       }
     }
 
     stage('Test') {
       steps {
-        sh "cargo test"
+        sh 'cargo test'
       }
     }
 
     stage('Clippy') {
       steps {
-        sh "cargo clippy --all"
+        sh '''
+          rustup component add clippy
+          cargo clippy --all
+        '''
       }
       post {
         always {
@@ -28,7 +31,7 @@ pipeline {
 
     stage('Rustfmt') {
       steps {
-        sh "cargo fmt --all -- check"
+        sh 'cargo fmt --all -- check'
       }
       post {
         always {
@@ -40,7 +43,7 @@ pipeline {
     stage('Doc') {
       steps {
         // Not sure what to do with this yet
-        sh "cargo doc"
+        sh 'cargo doc'
       }
     }
   }
