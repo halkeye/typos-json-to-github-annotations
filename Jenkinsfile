@@ -27,7 +27,10 @@ pipeline {
 
     stage('Rustfmt') {
       steps {
-        sh 'cargo fmt --all -- check'
+        sh '''
+          rustup component add rustfmt
+          cargo fmt --all -- check
+        '''
       }
       post {
         always {
