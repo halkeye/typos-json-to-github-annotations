@@ -41,14 +41,13 @@ pub struct BinaryFile {
     // path: String
 }
 
-
 #[derive(Deserialize)]
 #[serde(tag = "type")]
 enum Message {
     #[serde(rename = "binary_file")]
     BinaryFile(BinaryFile),
     #[serde(rename = "typo")]
-    Typo(Typo)
+    Typo(Typo),
 }
 
 fn main() -> Result<(), Error> {

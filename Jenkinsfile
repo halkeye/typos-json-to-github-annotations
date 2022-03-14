@@ -31,11 +31,11 @@ pipeline {
           cargo check --message-format json || true
         '''
       }
-      post {
-        always {
-          recordIssues tools: [cargo()]
-        }
-      }
+      /*post {*/
+      /*  always {*/
+      /*    recordIssues tools: [cargo()]*/
+      /*  }*/
+      /*}*/
     }
 
     stage('Doc') {
